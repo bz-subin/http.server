@@ -14,11 +14,6 @@ class MyRequestHendler(BaseHTTPRequestHandler):
         self.wfile.write("")
 
 
-
-
-
-
-
 #BaseHTTPRequestHandler을 받아와서 MyRequestHandler라는 클래스를 실행한다.
 #(서버 상태, 초기 설정, 실제 입력 내용)
 
