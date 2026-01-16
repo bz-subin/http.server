@@ -5,26 +5,22 @@ class MyRequestHendler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("content-type","text/html; charset=utf-8")
         self.end_headers()
-        self.wfile.write("<h1>가나다</h1>".encode())
+        #write 쓸 때 문자열이랑 
         a = self.requestline
+        
+        h2_first = "<h2>".encode() 
+        h2_last = "</h2>".encode()
+        # script_first = "<script>".encode()
+        # script_last = "</script>".encode()
+
         self.wfile.write("<body>".encode()
-        +"<h2>".encode()+a.encode()+"</h2>".encode() #h2 a(로그)
-        +"<h2>클릭</h2>".encode()+ #h2 클릭
-        "</body>".encode())
-        self.wfile.write("")
-
-
-
-
-
-
-
-#BaseHTTPRequestHandler을 받아와서 MyRequestHandler라는 클래스를 실행한다.
-#(서버 상태, 초기 설정, 실제 입력 내용)
+        + h2_first + a.encode() + h2_last #h2 a(로그)
+        + "<h2>클릭".encode() + h2_last #h2 클릭
+        # + script_first + "console.log(a)".encode() + script_last #콘솔 로그
+        + "</body>".encode())
 
 host = "localhost"
 port = 800
-#
 
 #인스턴트
 servers = HTTPServer((host,port), MyRequestHendler)
