@@ -22,7 +22,6 @@ class MyRequestHendler(BaseHTTPRequestHandler):
 host = "localhost"
 port = 800
 
-#인스턴트
 servers = HTTPServer((host,port), MyRequestHendler)
 print(f"서버가 시작되었습니다. http://{host}:{port}로 접속하세요!")
 
