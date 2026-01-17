@@ -8,7 +8,7 @@ class MyRequestHendler(BaseHTTPRequestHandler): #BaseHTTPRequestHandler을 받�
         self.wfile.write("<h1>가나다</h1>".encode()) 
 
 host = "localhost" 
-port = 800
+port = 8000
 
 #인스턴트
 servers = HTTPServer((host,port), MyRequestHendler)
