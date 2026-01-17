@@ -4,14 +4,11 @@ class MyRequestHendler(BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
         self.send_header("content-type","text/html; charset=utf-8")
+        self.send_header("content-length","text/html; charset=utf-8")
         self.end_headers()
+        re_length = int("content-length")
+        self.rfile.read(re_length.decode())
         self.wfile.write("<h1>가나다</h1>".encode())
-        a = self.requestline
-        self.wfile.write("<body>".encode()
-        +"<h2>".encode()+a.encode()+"</h2>".encode() #h2 a(로그)
-        +"<h2>클릭</h2>".encode()+ #h2 클릭
-        "</body>".encode())
-        self.wfile.write("")
 
 
 #BaseHTTPRequestHandler을 받아와서 MyRequestHandler라는 클래스를 실행한다.
@@ -19,7 +16,7 @@ class MyRequestHendler(BaseHTTPRequestHandler):
 
 host = "localhost"
 port = 8000
-
+#
 
 #인스턴트
 servers = HTTPServer((host,port), MyRequestHendler)
