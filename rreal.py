@@ -1,7 +1,7 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 #http안에 있는 server에서 HTTPServer이라는것과 BaseHTTPRequestHandler을 가져온다.
 class MyRequestHendler(BaseHTTPRequestHandler):
-    def do_post(self):
+    def do_POST(self):
         self.send_response(200)
         self.send_header("content-type","text/html; charset=utf-8")
         self.end_headers()
