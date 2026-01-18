@@ -26,14 +26,30 @@ class MyRequestHendler(BaseHTTPRequestHandler):
 
         data = [] # 배열 만든다. 하나씩 담을거임.
         # data_last = []
+        
 #* print(user_data) #* %붙어있는지, 한 글자씩 나오는지 체크 => my_msg=%E3%85%81%E3%85%81
         # user_data = "".join(user_data) #왜 그런지 모르겠는데, 한글자씩 나옴.
         if not user_data.isdigit(): #*요청이 문자인가?(숫자가 아닌가?)
-            for idx, vel in enumerate(user_data).split("%"): # %에 폭력 행사 -> %가 사라지고 글자가 제각각 나뉨
-                if vel == "my_msg=":
-                    idx=idx+1
-                    user_data[idx:]
-                    print(user_data)    
+            user_data = user_data.split("%")
+            if user_data == "my_msg=":
+                user_data.replace("my_msg=","")
+                print(user_data)
+            # for idx, vel in enumerate(user_data): # %에 폭력 행사 -> %가 사라지고 글자가 제각각 나뉨
+            #         idx=idx+1
+            #         print(vel)
+            #         print(idx)
+            #     else:
+            #         print(vel)
+            #         print(idx)
+            #         # user_data[idx:]
+
+
+
+
+
+
+
+
                 # print(cut_data)
         #         data.append(cut_data) # 쪼개진 친구를 data에 담는다.                        
         #         int_data = int(data,16)
