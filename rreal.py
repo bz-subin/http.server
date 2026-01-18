@@ -7,7 +7,7 @@ class MyRequestHendler(BaseHTTPRequestHandler):
         self.wfile.write(
         """
         <body>
-        <h1>가나다</h1>
+        <h1>커밋 푸쉬 잊지마!</h1>
         <form action="/" method="POST">
             <input type="text" name="my_msg"> 
             
@@ -37,13 +37,21 @@ class MyRequestHendler(BaseHTTPRequestHandler):
                 else:  #my_data가 아닌 부분
                     int_data = int(data_vel,16)
                     data_last.append(int_data)   
-            p = bytes(data_last).decode() # 255 이상이라 에러 난 것으로 추정
+            p=bytes(data_last).decode()
             print(p)
+
+
+
+
+            # print(b)
+
+#1을 입력하면 두칸이 됨. my_msg랑 1이랑.  -> 슬라이싱으로 1부터 1까지 한다.
+                    
 
         self.send_response(200) #데이터 잘 받았어
         self.send_header("content-type","text/html; charset=utf-8") #줄 내용 속성 설정
         self.end_headers() # 내용 설정 완료!
-        self.wfile.write("<body>굿</body>".encode())
+        self.wfile.write("<h1>굿</h1>".encode())
 
 host = "localhost"
 port = 8000
