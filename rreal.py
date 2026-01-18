@@ -1,5 +1,4 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
-
 class MyRequestHendler(BaseHTTPRequestHandler):
     def do_GET(self): # 대놓고 보여줌
         self.send_response(200) #서버 상태
@@ -30,23 +29,31 @@ class MyRequestHendler(BaseHTTPRequestHandler):
 # urllib.parse.unquote(user_data)
 
         data = [] # 배열 만든다. 하나씩 담을거임.
-        print(data)
+        data_last = []
         print(user_data) #*입력값 전체 - 체크용
         if type(user_data) == str:  #만약 클라이언트의 요청이 문자열이라면 
             for cut_data in user_data.split("%"): # %에 폭력 행사 -> %가 사라지고 글자가 제각각 나뉨
                 data.append(cut_data) # 쪼개진 친구를 data에 담는다.
-            #>>> del data[0]  # 지금 앞에 붙은 my_msg 때문에 int가 잘 안 돌아가는 상황임 개선할 것.
-            for data_one in data:
-                data_last = int(data_one)
-                print(data_last.decode('utf-8'))              
+                # print(data) #* 쪼개서 배열에 넣은 상태.
+            for data_idx, data_vel in enumerate(data):
+                if data_vel == "my_msg=":  #my_msg를 찾아서 그게 어딘지 구해서(배열[인덱스]), 그 부분부터 끝까지만 보관하겠다
+                    print("같아요!")     # => my_msg를 떨구겠다.
+                    data_idx = data_idx + 1 #0부터 시작이니까 인덱스+1 (0번째 재끼고 1번째부터 쓸거라)
+                    data[data_idx:] #my_msg 있는 부분 다음부터 보관하겠다.
+                    print(data)
 
+                else:  #my_data가 아닌 부분
+                    int_data = int(data_vel)
+                    data_last.append(int_data)    
+                    print("잘 되었나 확인",data_last)
+                    
 #my_msg=   자동으로 붙는 7글자.
 #my_msg=%E3%85%81%E3%85%81%E3%85%81%E3%85%81%E3%85%81%E3%85%81%E3%85%81%E3%85%81%E3%85%81%E3%85%81%E3%85%81%E3%85%81
 
         self.send_response(200) #데이터 잘 받았어
         self.wfile.write("전달완료".encode())
 
-host = ""
+host = "localhost"
 port = 8006
 
 servers = HTTPServer((host,port), MyRequestHendler)
