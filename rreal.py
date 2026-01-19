@@ -42,44 +42,42 @@ class MyRequestHendler(BaseHTTPRequestHandler):
             con = self.wfile.write(script.encode())#콘솔
             return re_answer,con
 
-        def simple_body(tag, answer):  #* 함수를 만들려는 이유. 제목을 쉽게 쓰기 위해서.(태그랑 내용 적으면 됨)
+        def simple_body(tag, answer):  #* 함수를 만들려는 이유. 내용을 쉽게 쓰기 위해서/콘솔 로그 차이.(태그랑 내용 적으면 됨)
             answer_all ="<"+tag+">" + answer + "</"+tag+">"    
             re_answer = self.wfile.write(answer_all.encode()) #화면에 띄울것(내가 적을것)
             script = "<script>console.log('사용자가 내용을 조회중입니당')</script>"
             con = self.wfile.write(script.encode())#콘솔
             return re_answer,con
 
-
-
         print(un_user)#*터미널에 뜨게 함
         if "1단계" in un_user:
             server_front
             simple_title("h1","매슬로우 욕구 1단계")  #욕구 두 줄 나올것.
-            simple_title("h3","생리적 욕구")  #욕구 두 줄 나올것.
+            simple_title("h3","생리적 욕구")  
             simple_body("p",answer.body[0])
 
         elif "2단계" in un_user:
             server_front
-            simple_title("h1","매슬로우 욕구 2단계")  #욕구 두 줄 나올것.
-            simple_title("h3","안전의 욕구")  #욕구 두 줄 나올것.
+            simple_title("h1","매슬로우 욕구 2단계")  
+            simple_title("h3","안전의 욕구") 
             simple_body("p",answer.body[1])
 
         elif "3단계" in un_user:
             server_front
-            simple_title("h1","매슬로우 욕구 3단계")  #욕구 두 줄 나올것.
-            simple_title("h3", "사회적 욕구")  #욕구 두 줄 나올것.
+            simple_title("h1","매슬로우 욕구 3단계") 
+            simple_title("h3", "사회적 욕구")  
             simple_body("p",answer.body[2])
 
         elif "4단계" in un_user:
             server_front
-            simple_title("h1","매슬로우 욕구 4단계")  #욕구 두 줄 나올것
-            simple_title("h3","존중의 욕구")  #욕구 두 줄 나올것
+            simple_title("h1","매슬로우 욕구 4단계")  
+            simple_title("h3","존중의 욕구")  
             simple_body("p",answer.body[3])
 
         elif "5단계" in un_user:
             server_front
-            simple_title("h1", "매슬로우 욕구 5단계")  #욕구 두 줄 나올것
-            simple_title("h3", "자아실현의 욕구")  #욕구 두 줄 나올것
+            simple_title("h1", "매슬로우 욕구 5단계") 
+            simple_title("h3", "자아실현의 욕구") 
             simple_body("p",answer.body[4])
 
         else:
@@ -98,9 +96,3 @@ try:
     servers.serve_forever()
 except KeyboardInterrupt:
     servers.server_close()
-
-
-            # simple_body("""<p><pre>
-
-            # </pre></p>""" )
-
