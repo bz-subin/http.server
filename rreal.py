@@ -24,13 +24,15 @@ class MyRequestHendler(BaseHTTPRequestHandler):
         # 입력한 문자의 길이만큼 읽기 때문에, 읽기한 부분을 변수로 만든 뒤 나중에 출력 할 떄 그 변수를 decode 해야함.
         user_data = self.rfile.read(con_length).decode() #읽기
 
+        user_data_li = [user_data]
         # data = [] # 배열 만든다. 하나씩 담을거임.
         # data_last = []
         
-        print(user_data)
+        for cut_data in user_data: #쪼갠 데이터를 cut_data에 넣는다 
+            print(cut_data)
+        user_data = "".join(user_data) #왜 그런지 모르겠는데, 한글자씩 나옴.
 
 #* print(user_data) #* %붙어있는지, 한 글자씩 나오는지 체크 => my_msg=%E3%85%81%E3%85%81
-        # user_data = "".join(user_data) #왜 그런지 모르겠는데, 한글자씩 나옴.
 
 #쪼개고 문자인지 숫자인지 구별. 문자라면% 떼고 숫자나 특수문자면 그냥 해
 # 숫자가 아닐 경우(문자, 특수문자)
