@@ -8,16 +8,29 @@ class MyRequestHendler(BaseHTTPRequestHandler):
         self.end_headers() # 내용 설정 완료!
         self.wfile.write(
         """
-        <body>
-        <h1>매슬로우 욕구</h1>
-        
-        <form action="/" method="POST">
-            <input type="text" name="my_msg"> 
-            <input type="submit" value="보내기">
-        </form>
+        <body style="text-align: center;">
 
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+
+        <h1>매슬로우 욕구</h1>
+
+        <br>
+        <br>
+        <br>
+
+
+        <form action="/" method="POST">
+        <input type="text" name="my_msg"> <input type="submit" value="보내기">
+        </form>
+        
         </body>"""
         .encode()) # 보내줄 내용
+
 
 #보낼 떈 encode(컴퓨터 언어), 받을 땐 decode(우리가 읽을 수 있도록)인듯.
 
@@ -52,33 +65,38 @@ class MyRequestHendler(BaseHTTPRequestHandler):
         print(un_user)#*터미널에 뜨게 함
         if "1단계" in un_user:
             server_front
-            simple_title("h1","매슬로우 욕구 1단계")  #욕구 두 줄 나올것.
-            simple_title("h3","생리적 욕구")  
+            simple_title("h1","<br>"+"<pre>    매슬로우 욕구 1단계</pre>")  #욕구 두 줄 나올것.
+            simple_title("h3","<pre>      생리적 욕구</pre>")  
             simple_body("p",answer.body[0])
+            simple_body("p",answer.thinking[1])
 
         elif "2단계" in un_user:
             server_front
-            simple_title("h1","매슬로우 욕구 2단계")  
-            simple_title("h3","안전의 욕구") 
+            simple_title("h1","<br>"+"<pre>    매슬로우 욕구 2단계</pre>")  
+            simple_title("h3","<pre>      안전의 욕구</pre>") 
             simple_body("p",answer.body[1])
+            simple_body("p",answer.thinking[2])
 
         elif "3단계" in un_user:
             server_front
-            simple_title("h1","매슬로우 욕구 3단계") 
-            simple_title("h3", "사회적 욕구")  
+            simple_title("h1","<br>"+"<pre>    매슬로우 욕구 3단계</pre>")  
+            simple_title("h3","<pre>      사회적 욕구</pre>")
             simple_body("p",answer.body[2])
+            simple_body("p",answer.thinking[3])
 
         elif "4단계" in un_user:
             server_front
-            simple_title("h1","매슬로우 욕구 4단계")  
-            simple_title("h3","존중의 욕구")  
+            simple_title("h1","<br>"+"<pre>    매슬로우 욕구 4단계</pre>")   
+            simple_title("h3","<pre>      존중의 욕구</pre>")
             simple_body("p",answer.body[3])
+            simple_body("p",answer.thinking[4])
 
         elif "5단계" in un_user:
             server_front
-            simple_title("h1", "매슬로우 욕구 5단계") 
-            simple_title("h3", "자아실현의 욕구") 
+            simple_title("h1","<br>"+"<pre>    매슬로우 욕구 5단계</pre>")  
+            simple_title("h3","<pre>      자아실현의 욕구</pre>")
             simple_body("p",answer.body[4])
+            simple_body("p",answer.thinking[5])
 
         else:
             server_front
