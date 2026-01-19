@@ -24,16 +24,55 @@ class MyRequestHendler(BaseHTTPRequestHandler):
         # 입력한 문자의 길이만큼 읽기 때문에, 읽기한 부분을 변수로 만든 뒤 나중에 출력 할 떄 그 변수를 decode 해야함.
         user_data = self.rfile.read(con_length).decode() #읽기
 
-        data = [] # 배열 만든다. 하나씩 담을거임.
+        # data = [] # 배열 만든다. 하나씩 담을거임.
         # data_last = []
         
+        print(user_data)
+
 #* print(user_data) #* %붙어있는지, 한 글자씩 나오는지 체크 => my_msg=%E3%85%81%E3%85%81
         # user_data = "".join(user_data) #왜 그런지 모르겠는데, 한글자씩 나옴.
-        if not user_data.isdigit(): #*요청이 문자인가?(숫자가 아닌가?)
-            user_data = user_data.split("%")
-            if user_data == "my_msg=":
-                user_data.replace("my_msg=","")
-                print(user_data)
+
+#쪼개고 문자인지 숫자인지 구별. 문자라면% 떼고 숫자나 특수문자면 그냥 해
+# 숫자가 아닐 경우(문자, 특수문자)
+# 하나씩 하는게 나을지도  ,를 기준으로 나눔.
+# <공통 적용> 
+# 1. 쪼개기
+# 2. my_msg 떼기
+
+        # user_data.split(",") #유저 데이터를 쪼갠다 , 기준으로
+        # data.append(user_data)
+        # for cut_data in data: #쪼갠 데이터를 cut_data에 넣는다 
+        #     print(cut_data)
+        # print("최종",cut_data)
+
+        #     user_data = cut_data.split #입력값을 쪼갠다 , 를 기준으로 
+            
+
+        # # if not user_data.isdigit(): #*요청이 숫자가 아닌가?(문자+숫자, 특수문자, 등등)
+        # #     user_data = user_data.split("%") #문자라면 쪼갠다.
+        # print(user_data)
+        #     #문자가 들어가있는가?로 바꾸면 좋을듯. 
+        # # else: #숫자라면 
+            
+        #     # +++ : my_msg=%2B%2B%2B
+        #     # ㅁㅂ : ['my_msg=', 'E3', '85', '81', 'E3', '85', '82']
+        #     # 1111 :  ['my_msg=1111']
+        #     # ㅁ1ㅁ1 : ['my_msg=', 'E3', '85', '811', 'E3', '85', '811']
+            
+        #     #*<할일>
+        #     # 1. my_msg 떼기 - 슬라이싱[1:] - E3부터 나올 수 있게.
+        #     # 2.문자+숫자의 경우 둘을 나누는 작업이 필요함.  isdigit 
+        #     for idx, vel in enumerate(user_data):
+        #         if vel == "my_msg=":
+        #     print(vel)
+                    # idx = idx+1
+                # else:
+                #     user_data[idx:]
+                #     print(vel)
+                #     print(idx)
+                #     data.append(user_data)
+
+                # print(data)
             # for idx, vel in enumerate(user_data): # %에 폭력 행사 -> %가 사라지고 글자가 제각각 나뉨
             #         idx=idx+1
             #         print(vel)
