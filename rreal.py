@@ -9,7 +9,7 @@ class MyRequestHendler(BaseHTTPRequestHandler):
         self.wfile.write(
         """
         <body>
-        <h1>커밋 푸쉬 잊지마!</h1>
+        <h1>매슬로우 욕구</h1>
         
         <form action="/" method="POST">
             <input type="text" name="my_msg"> 
@@ -56,31 +56,31 @@ class MyRequestHendler(BaseHTTPRequestHandler):
             server_front
             simple_title("h1","매슬로우 욕구 1단계")  #욕구 두 줄 나올것.
             simple_title("h3","생리적 욕구")  #욕구 두 줄 나올것.
-            simple_title("p",answer.body[0])
+            simple_body("p",answer.body[0])
 
         elif "2단계" in un_user:
             server_front
             simple_title("h1","매슬로우 욕구 2단계")  #욕구 두 줄 나올것.
             simple_title("h3","안전의 욕구")  #욕구 두 줄 나올것.
-            simple_title("p",answer.body[1])
+            simple_body("p",answer.body[1])
 
         elif "3단계" in un_user:
             server_front
             simple_title("h1","매슬로우 욕구 3단계")  #욕구 두 줄 나올것.
             simple_title("h3", "사회적 욕구")  #욕구 두 줄 나올것.
-            simple_title("p",answer.body[2])
+            simple_body("p",answer.body[2])
 
         elif "4단계" in un_user:
             server_front
             simple_title("h1","매슬로우 욕구 4단계")  #욕구 두 줄 나올것
             simple_title("h3","존중의 욕구")  #욕구 두 줄 나올것
-            simple_title("p",answer.body[3])
+            simple_body("p",answer.body[3])
 
         elif "5단계" in un_user:
             server_front
             simple_title("h1", "매슬로우 욕구 5단계")  #욕구 두 줄 나올것
             simple_title("h3", "자아실현의 욕구")  #욕구 두 줄 나올것
-            simple_title("p",answer.body[4])
+            simple_body("p",answer.body[4])
 
         else:
             server_front
