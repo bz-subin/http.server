@@ -1,6 +1,6 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import unquote
-import module.answer as answer
+import module.many_answer as m_answer
 class MyRequestHendler(BaseHTTPRequestHandler):
     def do_GET(self): # 대놓고 보여줌
         self.send_response(200) #서버 상태
@@ -67,36 +67,36 @@ class MyRequestHendler(BaseHTTPRequestHandler):
             server_front
             simple_title("h1","<br>"+"<pre>    매슬로우 욕구 1단계</pre>")  #욕구 두 줄 나올것.
             simple_title("h3","<pre>      생리적 욕구</pre>")  
-            simple_body("p",answer.body[0])
-            simple_body("p",answer.thinking[1])
+            simple_body("p",m_answer.body[0])
+            simple_body("p",m_answer.thinking[1])
 
         elif "2단계" in un_user:
             server_front
             simple_title("h1","<br>"+"<pre>    매슬로우 욕구 2단계</pre>")  
             simple_title("h3","<pre>      안전의 욕구</pre>") 
-            simple_body("p",answer.body[1])
-            simple_body("p",answer.thinking[2])
+            simple_body("p",m_answer.body[1])
+            simple_body("p",m_answer.thinking[2])
 
         elif "3단계" in un_user:
             server_front
             simple_title("h1","<br>"+"<pre>    매슬로우 욕구 3단계</pre>")  
             simple_title("h3","<pre>      사회적 욕구</pre>")
-            simple_body("p",answer.body[2])
-            simple_body("p",answer.thinking[3])
+            simple_body("p",m_answer.body[2])
+            simple_body("p",m_answer.thinking[3])
 
         elif "4단계" in un_user:
             server_front
             simple_title("h1","<br>"+"<pre>    매슬로우 욕구 4단계</pre>")   
             simple_title("h3","<pre>      존중의 욕구</pre>")
-            simple_body("p",answer.body[3])
-            simple_body("p",answer.thinking[4])
+            simple_body("p",m_answer.body[3])
+            simple_body("p",m_answer.thinking[4])
 
         elif "5단계" in un_user:
             server_front
             simple_title("h1","<br>"+"<pre>    매슬로우 욕구 5단계</pre>")  
             simple_title("h3","<pre>      자아실현의 욕구</pre>")
-            simple_body("p",answer.body[4])
-            simple_body("p",answer.thinking[5])
+            simple_body("p",m_answer.body[4])
+            simple_body("p",m_answer.thinking[5])
 
         else:
             server_front
