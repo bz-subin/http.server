@@ -1,13 +1,16 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import unquote
 import module.many_answer as m_answer
+
 class MyRequestHendler(BaseHTTPRequestHandler):
-    def do_GET(self): # 대놓고 보여줌
-        self.send_response(200) #서버 상태
-        self.send_header("content-type","text/html; charset=utf-8") #줄 내용 속성 설정
-        self.end_headers() # 내용 설정 완료!
-        self.wfile.write(
-        """
+    def do_GET(self): 
+        if self.path == '/':  #*self.path가 뭐노.
+            self.send_response(200)
+            self.send_header("content-type", "text/html; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(
+                """
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -28,18 +31,29 @@ class MyRequestHendler(BaseHTTPRequestHandler):
 
         .container {
             position: relative;
-            width: 70%;
-            height: 70%;
+            width: 80%;
+            height: 80%;
+        }
+
+        .container h1 {
+            position: absolute;
+            top: -5%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
         }
 
         .background-image {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70%;
+            height: 70%;
             object-fit: cover;
-            opacity: 0.7; /* 투명도 70% */
+            opacity: 0.7;
             z-index: 1;
         }
 
@@ -79,6 +93,7 @@ class MyRequestHendler(BaseHTTPRequestHandler):
 </head>
 <body>
     <div class="container">
+        <<h1 style="font-size: 50px;">제목</h1>
         <img src="img.jpg" alt="Background" class="background-image">
         <div class="select-container">
             <select id="contentSelector" onchange="showContent()">
@@ -108,11 +123,24 @@ class MyRequestHendler(BaseHTTPRequestHandler):
         }
     </script>
 </body>
-</html>"""
-        .encode()) # 보내줄 내용
+</html>
 
-
-#보낼 떈 encode(컴퓨터 언어), 받을 땐 decode(우리가 읽을 수 있도록)인듯.
+    """.encode())
+        elif self.path == '/img.jpg':  # 이미지 요청 처리
+            try:
+                with open("img.jpg", "rb") as file:
+                    self.send_response(200)
+                    self.send_header("Content-type", "image/jpeg")
+                    self.end_headers()
+                    self.wfile.write(file.read())
+            except FileNotFoundError:
+                self.send_response(404)
+                self.end_headers()
+                self.wfile.write(b"Image not found")
+        else:
+            self.send_response(404)
+            self.end_headers()
+            self.wfile.write(b"Page not found")
 
     def do_POST(self): # 숨겨서 보여줌(아이디, 비밀번호)
         print("응답을 받았습니다.")
@@ -128,69 +156,92 @@ class MyRequestHendler(BaseHTTPRequestHandler):
             self.end_headers(), # 내용 설정 완료!
         ]
 
-        def simple_title(tag, answer):  #* 함수를 만들려는 이유. 제목을 쉽게 쓰기 위해서.(태그랑 내용 적으면 됨)
-            answer_all ="<"+tag+">" + answer + "</"+tag+">"    
-            re_answer = self.wfile.write(answer_all.encode()) #화면에 띄울것(내가 적을것)
-            script = "<script>console.log('응답을 받았습니다')</script>"
-            con = self.wfile.write(script.encode())#콘솔
-            return re_answer,con
+        print("야호")
+        server_front
+        self.wfile.write("""
+        let box = document.getElementById("contentSelector");
+        if box.value === "content1" {
+            <h1>"매슬로우 욕구 1단계;"}.encode()""")
+        script = "<script>console.log('응답을 받았습니다')</script>"
+        self.wfile.write(script.encode())#콘솔            
 
-        def simple_body(tag, answer):  #* 함수를 만들려는 이유. 내용을 쉽게 쓰기 위해서/콘솔 로그 차이.(태그랑 내용 적으면 됨)
-            answer_all ="<"+tag+">" + answer + "</"+tag+">"    
-            re_answer = self.wfile.write(answer_all.encode()) #화면에 띄울것(내가 적을것)
-            script = "<script>console.log('사용자가 내용을 조회중입니당')</script>"
-            con = self.wfile.write(script.encode())#콘솔
-            return re_answer,con
 
-        print(un_user)#*터미널에 뜨게 함
-        if "1단계" in un_user:
-            server_front
-            simple_title("h1","<br>"+"<pre>    매슬로우 욕구 1단계</pre>")  #욕구 두 줄 나올것.
-            simple_title("h3","<pre>      생리적 욕구</pre>")  
-            simple_body("p",m_answer.body[0])
-            simple_body("p",m_answer.thinking[1])
 
-        elif "2단계" in un_user:
-            server_front
-            simple_title("h1","<br>"+"<pre>    매슬로우 욕구 2단계</pre>")  
-            simple_title("h3","<pre>      안전의 욕구</pre>") 
-            simple_body("p",m_answer.body[1])
-            simple_body("p",m_answer.thinking[2])
+        # def simple_title(tag, answer):  #* 함수를 만들려는 이유. 제목을 쉽게 쓰기 위해서.(태그랑 내용 적으면 됨)
+        #     answer_all ="<"+tag+">" + answer + "</"+tag+">"    
+        #     re_answer = self.wfile.write(answer_all.encode()) #화면에 띄울것(내가 적을것)
+        #     script = "<script>console.log('응답을 받았습니다')</script>"
+        #     con = self.wfile.write(script.encode())#콘솔
+        #     return re_answer,con
 
-        elif "3단계" in un_user:
-            server_front
-            simple_title("h1","<br>"+"<pre>    매슬로우 욕구 3단계</pre>")  
-            simple_title("h3","<pre>      사회적 욕구</pre>")
-            simple_body("p",m_answer.body[2])
-            simple_body("p",m_answer.thinking[3])
+        # def simple_body(tag, answer):  #* 함수를 만들려는 이유. 내용을 쉽게 쓰기 위해서/콘솔 로그 차이.(태그랑 내용 적으면 됨)
+        #     answer_all ="<"+tag+">" + answer + "</"+tag+">"    
+        #     re_answer = self.wfile.write(answer_all.encode()) #화면에 띄울것(내가 적을것)
+        #     script = "<script>console.log('사용자가 내용을 조회중입니당')</script>"
+        #     con = self.wfile.write(script.encode())#콘솔
+        #     return re_answer,con
 
-        elif "4단계" in un_user:
-            server_front
-            simple_title("h1","<br>"+"<pre>    매슬로우 욕구 4단계</pre>")   
-            simple_title("h3","<pre>      존중의 욕구</pre>")
-            simple_body("p",m_answer.body[3])
-            simple_body("p",m_answer.thinking[4])
 
-        elif "5단계" in un_user:
-            server_front
-            simple_title("h1","<br>"+"<pre>    매슬로우 욕구 5단계</pre>")  
-            simple_title("h3","<pre>      자아실현의 욕구</pre>")
-            simple_body("p",m_answer.body[4])
-            simple_body("p",m_answer.thinking[5])
 
-        else:
-            server_front
-            simple_title("h1", "굿") 
+        # elif "2단계" in un_user:
+        #     server_front
+        #     simple_title("h1","<br>"+"<pre>    매슬로우 욕구 2단계</pre>")  
+        #     simple_title("h3","<pre>      안전의 욕구</pre>") 
+        #     simple_body("p",m_answer.body[1])
+        #     simple_body("p",m_answer.thinking[2])
+
+        # elif "3단계" in un_user:
+        #     server_front
+        #     simple_title("h1","<br>"+"<pre>    매슬로우 욕구 3단계</pre>")  
+        #     simple_title("h3","<pre>      사회적 욕구</pre>")
+        #     simple_body("p",m_answer.body[2])
+        #     simple_body("p",m_answer.thinking[3])
+
+        # elif "4단계" in un_user:
+        #     server_front
+        #     simple_title("h1","<br>"+"<pre>    매슬로우 욕구 4단계</pre>")   
+        #     simple_title("h3","<pre>      존중의 욕구</pre>")
+        #     simple_body("p",m_answer.body[3])
+        #     simple_body("p",m_answer.thinking[4])
+
+        # elif "5단계" in un_user:
+        #     server_front
+        #     simple_title("h1","<br>"+"<pre>    매슬로우 욕구 5단계</pre>")  
+        #     simple_title("h3","<pre>      자아실현의 욕구</pre>")
+        #     simple_body("p",m_answer.body[4])
+        #     simple_body("p",m_answer.thinking[5])
+
+        # else:
+        #     server_front
+        #     simple_title("h1", "굿") 
+
+
+
 
 
 host = "localhost"
 port = 8001
 
-servers = HTTPServer((host,port), MyRequestHendler)
+servers = HTTPServer((host, port), MyRequestHendler)
 print(f"서버가 시작되었습니다. http://{host}:{port}로 접속하세요!")
-
 
 try:
     servers.serve_forever()
 except KeyboardInterrupt:
     servers.server_close()
+
+
+#
+
+
+# host = "localhost"
+# port = 8001
+
+# servers = HTTPServer((host,port), MyRequestHendler)
+# print(f"서버가 시작되었습니다. http://{host}:{port}로 접속하세요!")
+
+
+# try:
+#     servers.serve_forever()
+# except KeyboardInterrupt:
+#     servers.server_close()
