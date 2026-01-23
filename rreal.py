@@ -8,27 +8,107 @@ class MyRequestHendler(BaseHTTPRequestHandler):
         self.end_headers() # 내용 설정 완료!
         self.wfile.write(
         """
-        <body style="text-align: center;">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Webpage</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
 
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
+        .container {
+            position: relative;
+            width: 70%;
+            height: 70%;
+        }
 
-        <h1>매슬로우 욕구</h1>
+        .background-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.7; /* 투명도 70% */
+            z-index: 1;
+        }
 
-        <br>
-        <br>
-        <br>
+        .select-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            text-align: center;
+        }
 
+        select {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+        }
 
-        <form action="/" method="POST">
-        <input type="text" name="my_msg"> <input type="submit" value="보내기">
-        </form>
-        
-        </body>"""
+        .content {
+            display: none;
+            position: absolute;
+            top: 80%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 3;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="img.jpg" alt="Background" class="background-image">
+        <div class="select-container">
+            <select id="contentSelector" onchange="showContent()">
+                <option value="">-- Select an option --</option>
+                <option value="content1">Option 1</option>
+                <option value="content2">Option 2</option>
+                <option value="content3">Option 3</option>
+            </select>
+        </div>
+        <div id="content1" class="content">This is the content for Option 1.</div>
+        <div id="content2" class="content">This is the content for Option 2.</div>
+        <div id="content3" class="content">This is the content for Option 3.</div>
+    </div>
+
+    <script>
+        function showContent() {
+            const selectedValue = document.getElementById("contentSelector").value;
+            const contents = document.querySelectorAll(".content");
+
+            contents.forEach(content => {
+                content.classList.remove("active");
+            });
+
+            if (selectedValue) {
+                document.getElementById(selectedValue).classList.add("active");
+            }
+        }
+    </script>
+</body>
+</html>"""
         .encode()) # 보내줄 내용
 
 
