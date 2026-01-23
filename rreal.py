@@ -1,48 +1,45 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import unquote
-import module.many_answer as m_answer
 
 class MyRequestHendler(BaseHTTPRequestHandler):
     def do_GET(self): 
-        if self.path == '/':  #*self.path가 뭐노.
             self.send_response(200)
             self.send_header("content-type", "text/html; charset=utf-8")
             self.end_headers()
-            self.wfile.write(
-                """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Custom Webpage</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #000;
-            color: white;
-            font-family: Arial, sans-serif;
-        }
+            self.wfile.write("""
+    <!DOCTYPE html>
+    <html lang="en">
+        <head>
+        <meta charset="UTF-8"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <title>Custom Webpage</title>
+            <style>
+                body { 
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center; 
+                align-items: center; 
+                height: 100vh; 
+                background-color: #000;
+                color: white; 
+                font-family: Arial, sans-serif; 
+            }
 
-        .container {
-            position: relative;
+        .container { 
+            position: relative; 
             width: 80%;
             height: 80%;
         }
 
-        .container h1 {
-            position: absolute;
-            top: -5%;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 2;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        .container h1 { 
+            position: absolute; 
+            top: -5%; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            z-index: 2; 
+            color: white; 
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); 
         }
 
         .background-image {
@@ -126,21 +123,6 @@ class MyRequestHendler(BaseHTTPRequestHandler):
 </html>
 
     """.encode())
-        elif self.path == '/img.jpg':  # 이미지 요청 처리
-            try:
-                with open("img.jpg", "rb") as file:
-                    self.send_response(200)
-                    self.send_header("Content-type", "image/jpeg")
-                    self.end_headers()
-                    self.wfile.write(file.read())
-            except FileNotFoundError:
-                self.send_response(404)
-                self.end_headers()
-                self.wfile.write(b"Image not found")
-        else:
-            self.send_response(404)
-            self.end_headers()
-            self.wfile.write(b"Page not found")
 
     def do_POST(self): # 숨겨서 보여줌(아이디, 비밀번호)
         print("응답을 받았습니다.")
@@ -150,72 +132,45 @@ class MyRequestHendler(BaseHTTPRequestHandler):
         user_data = self.rfile.read(con_length).decode() #읽기
         un_user = unquote(user_data) #16진수 -> 문자열 #*응답을 읽음
         
-        server_front = [
-            self.send_response(200), #데이터 잘 받았어
-            self.send_header("content-type","text/html; charset=utf-8"), #줄 내용 속성 설정
-            self.end_headers(), # 내용 설정 완료!
-        ]
+        if self.path == '/':  #*self.path가 뭐노.
+            self.send_response(200)
+            self.send_header("content-type", "text/html; charset=utf-8")
+            self.end_headers()
 
-        print("야호")
-        server_front
-        self.wfile.write("""
-        let box = document.getElementById("contentSelector");
-        if box.value === "content1" {
-            <h1>"매슬로우 욕구 1단계;"}.encode()""")
-        script = "<script>console.log('응답을 받았습니다')</script>"
-        self.wfile.write(script.encode())#콘솔            
+        elif self.path == '/img.jpg':  #* 브라우저가==요청 했다면.
+            try: #일단 고 
+                with open("img.jpg", "rb") as file: 
+                    self.send_response(200)#아는 부분
+                    self.send_header("Content-type", "image/jpeg") #아는 부분
+                    self.end_headers()#아는 부분
+                    self.wfile.write(file.read())#아는 부분
+            except FileNotFoundError:
+                self.send_response(404)
+                self.end_headers()
+                self.wfile.write(b"Image not found")
+        else:
+            self.send_response(404)
+            self.end_headers()
+            self.wfile.write(b"Page not found")
 
+# 지금 대충 그림 띄우고 그림에 대해서 나누겠다 는 느낌으로 놨음. 하다보면 부족할것임.
 
+# <홈 화면>
+# 1. 제목
+#    <h1 style="font-size: 50px;">제목</h1>
+# 2. 그림 전체의 80% 크기로 띄움. (투명도 70%)
+# 3. 선택창 그 위에 select 띄움. (중앙에 가장 보기 좋게)
 
-        # def simple_title(tag, answer):  #* 함수를 만들려는 이유. 제목을 쉽게 쓰기 위해서.(태그랑 내용 적으면 됨)
-        #     answer_all ="<"+tag+">" + answer + "</"+tag+">"    
-        #     re_answer = self.wfile.write(answer_all.encode()) #화면에 띄울것(내가 적을것)
-        #     script = "<script>console.log('응답을 받았습니다')</script>"
-        #     con = self.wfile.write(script.encode())#콘솔
-        #     return re_answer,con
+# <select 선택에 따른 내용>
+# 1. 제목 
+#    <h1 style="font-size: 50px;">제목</h1>
+# 2. 여러개의 버튼을 만들어서 누르면 창에 연결되게끔 할 것.
+# 3. 배경 사진을 띄울것.
 
-        # def simple_body(tag, answer):  #* 함수를 만들려는 이유. 내용을 쉽게 쓰기 위해서/콘솔 로그 차이.(태그랑 내용 적으면 됨)
-        #     answer_all ="<"+tag+">" + answer + "</"+tag+">"    
-        #     re_answer = self.wfile.write(answer_all.encode()) #화면에 띄울것(내가 적을것)
-        #     script = "<script>console.log('사용자가 내용을 조회중입니당')</script>"
-        #     con = self.wfile.write(script.encode())#콘솔
-        #     return re_answer,con
-
-
-
-        # elif "2단계" in un_user:
-        #     server_front
-        #     simple_title("h1","<br>"+"<pre>    매슬로우 욕구 2단계</pre>")  
-        #     simple_title("h3","<pre>      안전의 욕구</pre>") 
-        #     simple_body("p",m_answer.body[1])
-        #     simple_body("p",m_answer.thinking[2])
-
-        # elif "3단계" in un_user:
-        #     server_front
-        #     simple_title("h1","<br>"+"<pre>    매슬로우 욕구 3단계</pre>")  
-        #     simple_title("h3","<pre>      사회적 욕구</pre>")
-        #     simple_body("p",m_answer.body[2])
-        #     simple_body("p",m_answer.thinking[3])
-
-        # elif "4단계" in un_user:
-        #     server_front
-        #     simple_title("h1","<br>"+"<pre>    매슬로우 욕구 4단계</pre>")   
-        #     simple_title("h3","<pre>      존중의 욕구</pre>")
-        #     simple_body("p",m_answer.body[3])
-        #     simple_body("p",m_answer.thinking[4])
-
-        # elif "5단계" in un_user:
-        #     server_front
-        #     simple_title("h1","<br>"+"<pre>    매슬로우 욕구 5단계</pre>")  
-        #     simple_title("h3","<pre>      자아실현의 욕구</pre>")
-        #     simple_body("p",m_answer.body[4])
-        #     simple_body("p",m_answer.thinking[5])
-
-        # else:
-        #     server_front
-        #     simple_title("h1", "굿") 
-
-
+# <submit 선택에 따른 내용>
+# 1. 카톡 같은 느낌으로 만들기.(맨 위 제목)
+#   아이콘 뜨게
+#   대화 치면 한글자씩 연결되며 뜨게끔.
 
 
 
@@ -229,19 +184,3 @@ try:
     servers.serve_forever()
 except KeyboardInterrupt:
     servers.server_close()
-
-
-#
-
-
-# host = "localhost"
-# port = 8001
-
-# servers = HTTPServer((host,port), MyRequestHendler)
-# print(f"서버가 시작되었습니다. http://{host}:{port}로 접속하세요!")
-
-
-# try:
-#     servers.serve_forever()
-# except KeyboardInterrupt:
-#     servers.server_close()
