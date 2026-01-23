@@ -126,8 +126,10 @@ class MyRequestHendler(BaseHTTPRequestHandler):
 
     def do_POST(self): # 숨겨서 보여줌(아이디, 비밀번호)
         print("응답을 받았습니다.")
-        con_length = self.headers.get("content-length",0) #몇 글자인지 확인/못 찾으면 0 가져옴 
-        con_length = int(con_length)
+
+
+        # con_length = self.headers.get("content-length",0) #몇 글자인지 확인/못 찾으면 0 가져옴 
+        # con_length = int(con_length)
         # 입력한 문자의 길이만큼 읽기 때문에, 읽기한 부분을 변수로 만든 뒤 나중에 출력 할 떄 그 변수를 decode 해야함.
         user_data = self.rfile.read(con_length).decode() #읽기
         un_user = unquote(user_data) #16진수 -> 문자열 #*응답을 읽음
