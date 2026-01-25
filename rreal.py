@@ -12,7 +12,7 @@ class MyRequestHendler(BaseHTTPRequestHandler):
         <head>
         <meta charset="UTF-8"> 
         <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-        <title>Custom Webpage</title>
+        <title>page</title>
             <style>
                 body { 
                 margin: 0;
@@ -109,15 +109,73 @@ class MyRequestHendler(BaseHTTPRequestHandler):
     </div>
 
     <script>
+        const titles = ["1번임", "2번임", "3번임", "4번임", "5번임"];
+        const buttons = ["1번", "2번", "3번", "4번", "5번"];
+
         function showContent() {
             const selectedValue = document.getElementById("contentSelector").value;
             if (selectedValue === "content1") {
-                document.body.innerHTML = "<h1>야호</h1>";
+                showScreen(0);
             } else if (selectedValue === "content2") {
-                document.body.innerHTML = "<p>야야호</p>";
+                showScreen(1);
             } else if (selectedValue === "content3") {
-                document.body.innerHTML = "<img src='crycat.PNG' alt='Cry Cat'>";
+                showScreen(2);
             }
+        }
+
+        function showScreen(index) {
+            const title = titles[index];
+            const buttonHtml = buttons.map(btn => `<button>${btn}</button>`).join('');
+            document.body.innerHTML = `
+                <div style="height:50px; display:flex; align-items:center; justify-content:center;">
+                    <h1>${title}</h1>
+                </div>
+                <div style="display:flex; flex-wrap:wrap;">
+                    ${buttonHtml}
+                </div>
+            `;
+        }
+
+        function showDetail(num) {
+            const title = num === 1 ? "첫번째" : "두번째";
+            document.body.innerHTML = `
+                <h1>${title}</h1>
+                <input type="text" id="chatInput" placeholder="메시지를 입력하세요">
+                <button onclick="sendMessage()">전송</button>
+                <div id="messages" style="border:1px solid #ccc; height:200px; overflow-y:scroll;"></div>
+                <div style="height:10px; position:fixed; bottom:0; width:100%; background-color:lightgray; text-align:center; line-height:10px; font-size:10px;">모든 내용은 저녁 12시에 삭제됩니다</div>
+            `;
+            loadMessages();
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const msg = input.value.trim();
+            if (msg) {
+                const messages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
+                messages.push(msg);
+                localStorage.setItem('chatMessages', JSON.stringify(messages));
+                input.value = '';
+                displayMessages();
+            }
+        }
+
+        function loadMessages() {
+            displayMessages();
+            // 매일 00:00에 메시지 삭제
+            setInterval(() => {
+                const now = new Date();
+                if (now.getHours() === 0 && now.getMinutes() === 0 && now.getSeconds() === 0) {
+                    localStorage.removeItem('chatMessages');
+                    displayMessages();
+                }
+            }, 1000); // 1초마다 체크
+        }
+
+        function displayMessages() {
+            const messages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
+            const div = document.getElementById('messages');
+            div.innerHTML = messages.map(m => `<p>${m}</p>`).join('');
         }
     </script>
 </body>
@@ -157,6 +215,7 @@ class MyRequestHendler(BaseHTTPRequestHandler):
             self.wfile.write(b"Page not found")
 
 host = "localhost"
+
 port = 8001
 
 servers = HTTPServer((host, port), MyRequestHendler)
