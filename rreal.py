@@ -90,8 +90,8 @@ class MyRequestHendler(BaseHTTPRequestHandler):
 </head>
 <body>
     <div class="container">
-        <<h1 style="font-size: 50px;">제목</h1>
-        <img src="img.jpg" alt="Background" class="background-image">
+        <h1 style="font-size: 50px;">제목</h1>
+        <img src="crycat.PNG" alt="Background" class="background-image">
         <div class="select-container">
             <select id="contentSelector" onchange="showContent()">
                 <option value="">-- Select an option --</option>
@@ -101,6 +101,9 @@ class MyRequestHendler(BaseHTTPRequestHandler):
             </select>
         </div>
         <div id="content1" class="content">This is the content for Option 1.</div>
+
+
+            
         <div id="content2" class="content">This is the content for Option 2.</div>
         <div id="content3" class="content">This is the content for Option 3.</div>
     </div>
@@ -108,14 +111,12 @@ class MyRequestHendler(BaseHTTPRequestHandler):
     <script>
         function showContent() {
             const selectedValue = document.getElementById("contentSelector").value;
-            const contents = document.querySelectorAll(".content");
-
-            contents.forEach(content => {
-                content.classList.remove("active");
-            });
-
-            if (selectedValue) {
-                document.getElementById(selectedValue).classList.add("active");
+            if (selectedValue === "content1") {
+                document.body.innerHTML = "<h1>야호</h1>";
+            } else if (selectedValue === "content2") {
+                document.body.innerHTML = "<p>야야호</p>";
+            } else if (selectedValue === "content3") {
+                document.body.innerHTML = "<img src='crycat.PNG' alt='Cry Cat'>";
             }
         }
     </script>
@@ -139,9 +140,9 @@ class MyRequestHendler(BaseHTTPRequestHandler):
             self.send_header("content-type", "text/html; charset=utf-8")
             self.end_headers()
 
-        elif self.path == '/img.jpg':  #* 브라우저가==요청 했다면.
+        elif self.path == '/crycat.PNG':  #* 브라우저가==요청 했다면.
             try: #일단 고 
-                with open("img.jpg", "rb") as file: 
+                with open("crycat.PNG", "rb") as file: 
                     self.send_response(200)#아는 부분
                     self.send_header("Content-type", "image/jpeg") #아는 부분
                     self.end_headers()#아는 부분
@@ -154,27 +155,6 @@ class MyRequestHendler(BaseHTTPRequestHandler):
             self.send_response(404)
             self.end_headers()
             self.wfile.write(b"Page not found")
-
-# 지금 대충 그림 띄우고 그림에 대해서 나누겠다 는 느낌으로 놨음. 하다보면 부족할것임.
-
-# <홈 화면>
-# 1. 제목
-#    <h1 style="font-size: 50px;">제목</h1>
-# 2. 그림 전체의 80% 크기로 띄움. (투명도 70%)
-# 3. 선택창 그 위에 select 띄움. (중앙에 가장 보기 좋게)
-
-# <select 선택에 따른 내용>
-# 1. 제목 
-#    <h1 style="font-size: 50px;">제목</h1>
-# 2. 여러개의 버튼을 만들어서 누르면 창에 연결되게끔 할 것.
-# 3. 배경 사진을 띄울것.
-
-# <submit 선택에 따른 내용>
-# 1. 카톡 같은 느낌으로 만들기.(맨 위 제목)
-#   아이콘 뜨게
-#   대화 치면 한글자씩 연결되며 뜨게끔.
-
-
 
 host = "localhost"
 port = 8001
