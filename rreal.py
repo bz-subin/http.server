@@ -114,12 +114,24 @@ class MyRequestHendler(BaseHTTPRequestHandler):
 
         function showContent() {
             const selectedValue = document.getElementById("contentSelector").value;
-            if (selectedValue === "content1") {
-                showScreen(0);
-            } else if (selectedValue === "content2") {
-                showScreen(1);
-            } else if (selectedValue === "content3") {
-                showScreen(2);
+
+            if (selectedValue) {
+                fetch("http://localhost:8001", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    body: `option=${selectedValue}`,
+                })
+                .then(response => response.text())
+                .then(data => {
+                    document.body.innerHTML = `
+                        <div style="height:50px; display:flex; align-items:center; justify-content:center;">
+                            <h1>${data}</h1>
+                        </div>
+                    `;
+                })
+                .catch(error => console.error("Error:", error));
             }
         }
 
@@ -183,13 +195,28 @@ class MyRequestHendler(BaseHTTPRequestHandler):
 
     """.encode())
 
-    def do_POST(self): # 숨겨서 보여줌(아이디, 비밀번호)
-        print("응답을 받았습니다.")
+    def do_POST(self):
+#이 부분을 수정해서 결과 나오게 함.
+        if selected_option == 'content1':
+            print("응답을 받았습니다.")
+            response_content = 'This is the response for Option 1.'
+        elif selected_option == 'content2':
+            print("응답을 받았습니다.")
+            response_content = 'This is the response for Option 2.'
+        elif selected_option == 'content3':
+            print("응답을 받았습니다.")
+            response_content = 'This is the response for Option 3.'
+        else:
+            print("응답을 받았습니다.")
+            response_content = 'Invalid option selected.'
+
+        # 응답 전송
+        self.send_response(200)
+        self.send_header('Content-type', 'text/plain; charset=utf-8')
+        self.end_headers()
+        self.wfile.write(response_content.encode('utf-8'))
 
 
-        # con_length = self.headers.get("content-length",0) #몇 글자인지 확인/못 찾으면 0 가져옴 
-        # con_length = int(con_length)
-        # 입력한 문자의 길이만큼 읽기 때문에, 읽기한 부분을 변수로 만든 뒤 나중에 출력 할 떄 그 변수를 decode 해야함.
         user_data = self.rfile.read(con_length).decode() #읽기
         un_user = unquote(user_data) #16진수 -> 문자열 #*응답을 읽음
         
