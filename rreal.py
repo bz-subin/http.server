@@ -1,5 +1,6 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import unquote
+import re
 
 class MyRequestHendler(BaseHTTPRequestHandler):
     def do_GET(self): 
@@ -100,13 +101,18 @@ class MyRequestHendler(BaseHTTPRequestHandler):
                 <option value="content3">Option 3</option>
             </select>
         </div>
-        <div id="content1" class="content">This is the content for Option 1.</div>
 
+        <div id="content1" class="content">
+            <span class="text-content">This is the content for Option 1.</span>
+        </div>
 
-            
-        <div id="content2" class="content">This is the content for Option 2.</div>
-        <div id="content3" class="content">This is the content for Option 3.</div>
-    </div>
+        <div id="content2" class="content">
+            <span class="text-content">This is the content for Option 1.</span>
+        </div>
+
+        <div id="content3" class="content">
+            <span class="text-content">This is the content for Option 1.</span>
+        </div>
 
     <script>
         const titles = ["1번임", "2번임", "3번임", "4번임", "5번임"];
@@ -194,47 +200,60 @@ class MyRequestHendler(BaseHTTPRequestHandler):
 </html>
 
     """.encode())
+            
+    # 파싱을 해야함. 왜? 맞는 부분을 찾아서 화면에 연결해야하기 때문
+    # 어떻게 하지?
+    # 일단 self.wfile_write를 변수에 넣음.
+    # 그리고 그 변수를 split을 통해 <div>를 뿌셔서 나눔.
+    #그럼 많은 부분이 나올거임. 걍 포킹 하면 안됨?
+
 
     def do_POST(self):
+        con_length = int(self.headers.get("content-length",0)) #몇 글자인지 확인/못 찾으면 0 가져옴 
+        user_data = self.rfile.read(con_length).decode() #읽기
+        un_user = unquote(user_data) #16진수 -> 문자열 #*응답을 읽음
+
         self.send_response(200)
         self.send_header('Content-type', 'text/plain; charset=utf-8')
         self.end_headers()
 #이 부분을 수정해서 결과 나오게 함.
-        if selected_option == 'content1': #여기가 잘 안 되는듯?
-            print("응답을 받았습니다.")
+        if "content1" in un_user: #*여기가 잘 안 되는듯?
+            print("1번 응답을 받았습니다.")
             self.wfile.write("""
-            <!DOCTYPE html>
-            <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Document</title>
-            </head>
-            <body>
-                <h1>This is the response for Option 1</h1>
-            </body>
-            </html>
-            """.encode())
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Document</title>
+                </head>
+                <body>
+                    <h1>This is the response for Option 1</h1>
+                </body>
+                </html>
+                """.encode())
+        elif "content2" in get_write:
+            print("2번 응답을 받았습니다.")
+            
 
-        elif selected_option == 'content2':
-            print("응답을 받았습니다.")
-            response_content = 'This is the response for Option 2.'
-            self.wfile.write(response_content.encode('utf-8'))
-        elif selected_option == 'content3':
-            print("응답을 받았습니다.")
-            response_content = 'This is the response for Option 3.'
-            self.wfile.write(response_content.encode('utf-8'))
-        else:
-            print("응답을 받았습니다.")
-            response_content = 'Invalid option selected.'
-            self.wfile.write(response_content.encode('utf-8'))
+
+
+
+        # elif selected_option == 'content2':
+        #     print("2번 응답을 받았습니다.")
+        #     self.wfile.write(response_content.encode('utf-8'))
+        # elif selected_option == 'content3':
+        #     print("3번 응답을 받았습니다.")
+        #     self.wfile.write(response_content.encode('utf-8'))
+        # else:
+        #     print("4번 응답을 받았습니다.")
+        #     self.wfile.write(response_content.encode('utf-8'))
 
         # 응답 전송
 
 
 
-        # user_data = self.rfile.read(con_length).decode() #읽기
-        # un_user = unquote(user_data) #16진수 -> 문자열 #*응답을 읽음
+
         
         # if self.path == '/':  #*self.path가 뭐노.
         #     self.send_response(200)
