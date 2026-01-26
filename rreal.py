@@ -196,50 +196,66 @@ class MyRequestHendler(BaseHTTPRequestHandler):
     """.encode())
 
     def do_POST(self):
-#이 부분을 수정해서 결과 나오게 함.
-        if selected_option == 'content1':
-            print("응답을 받았습니다.")
-            response_content = 'This is the response for Option 1.'
-        elif selected_option == 'content2':
-            print("응답을 받았습니다.")
-            response_content = 'This is the response for Option 2.'
-        elif selected_option == 'content3':
-            print("응답을 받았습니다.")
-            response_content = 'This is the response for Option 3.'
-        else:
-            print("응답을 받았습니다.")
-            response_content = 'Invalid option selected.'
-
-        # 응답 전송
         self.send_response(200)
         self.send_header('Content-type', 'text/plain; charset=utf-8')
         self.end_headers()
-        self.wfile.write(response_content.encode('utf-8'))
+#이 부분을 수정해서 결과 나오게 함.
+        if selected_option == 'content1': #여기가 잘 안 되는듯?
+            print("응답을 받았습니다.")
+            self.wfile.write("""
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Document</title>
+            </head>
+            <body>
+                <h1>This is the response for Option 1</h1>
+            </body>
+            </html>
+            """.encode())
 
-
-        user_data = self.rfile.read(con_length).decode() #읽기
-        un_user = unquote(user_data) #16진수 -> 문자열 #*응답을 읽음
-        
-        if self.path == '/':  #*self.path가 뭐노.
-            self.send_response(200)
-            self.send_header("content-type", "text/html; charset=utf-8")
-            self.end_headers()
-
-        elif self.path == '/crycat.PNG':  #* 브라우저가==요청 했다면.
-            try: #일단 고 
-                with open("crycat.PNG", "rb") as file: 
-                    self.send_response(200)#아는 부분
-                    self.send_header("Content-type", "image/jpeg") #아는 부분
-                    self.end_headers()#아는 부분
-                    self.wfile.write(file.read())#아는 부분
-            except FileNotFoundError:
-                self.send_response(404)
-                self.end_headers()
-                self.wfile.write(b"Image not found")
+        elif selected_option == 'content2':
+            print("응답을 받았습니다.")
+            response_content = 'This is the response for Option 2.'
+            self.wfile.write(response_content.encode('utf-8'))
+        elif selected_option == 'content3':
+            print("응답을 받았습니다.")
+            response_content = 'This is the response for Option 3.'
+            self.wfile.write(response_content.encode('utf-8'))
         else:
-            self.send_response(404)
-            self.end_headers()
-            self.wfile.write(b"Page not found")
+            print("응답을 받았습니다.")
+            response_content = 'Invalid option selected.'
+            self.wfile.write(response_content.encode('utf-8'))
+
+        # 응답 전송
+
+
+
+        # user_data = self.rfile.read(con_length).decode() #읽기
+        # un_user = unquote(user_data) #16진수 -> 문자열 #*응답을 읽음
+        
+        # if self.path == '/':  #*self.path가 뭐노.
+        #     self.send_response(200)
+        #     self.send_header("content-type", "text/html; charset=utf-8")
+        #     self.end_headers()
+
+        # elif self.path == '/crycat.PNG':  #* 브라우저가==요청 했다면.
+        #     try: #일단 고 
+        #         with open("crycat.PNG", "rb") as file: 
+        #             self.send_response(200)#아는 부분
+        #             self.send_header("Content-type", "image/jpeg") #아는 부분
+        #             self.end_headers()#아는 부분
+        #             self.wfile.write(file.read())#아는 부분
+        #     except FileNotFoundError:
+        #         self.send_response(404)
+        #         self.end_headers()
+        #         self.wfile.write(b"Image not found")
+        # else:
+        #     self.send_response(404)
+        #     self.end_headers()
+        #     self.wfile.write(b"Page not found")
 
 host = "localhost"
 
