@@ -147,7 +147,6 @@ class MyRequestHendler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Content-type', 'text/plain; charset=utf-8')
         self.end_headers()
-#이 부분을 수정해서 결과 나오게 함.
         if "content1" in un_user: #*여기가 잘 안 되는듯?
             print("1번 응답을 받았습니다.")
             self.wfile.write("""
